@@ -1,0 +1,6 @@
+*.bpp
+*.EXP
+*.shp
+source/
+obj/
+.gitignore.bak

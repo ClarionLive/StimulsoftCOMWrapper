@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Stimulsoft .net COM wrapper RegFree manifest created by Dave Bratovich 07.13.2017 -->
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assemblyIdentity name="Stimulsoft.Report.Com" version="1.0.0.0" type="win32"></assemblyIdentity>   
+<clrClass name="Stimulsoft.Report.Com.ReportCom" clsid="{7847395C-F7F5-3DC0-AB7C-A6F754ED1A45}" progid="Stimulsoft.Report.Com.ReportCom" threadingModel="Both" runtimeVersion="v4.0.30319"></clrClass>
+<file name="Stimulsoft.Report.Com.Dll">
+ <typelib tlbid="{DD72CBA0-FD18-4A21-B107-6BB9271CDEF0}" version="1.0" helpdir="" flags="hasdiskimage" /> 
+</file>   
+</assembly>
+
+
+
+

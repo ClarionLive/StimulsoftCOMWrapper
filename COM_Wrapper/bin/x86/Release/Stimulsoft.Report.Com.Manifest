@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+
+<assemblyIdentity name="Stimulsoft.Report.Com" version="1.0.0.0" type="win32"/>
+
+<description>Built with: Side-by-Side Manifest Maker (6.0.5342.0) (x64)</description>
+<description>Copyright: (c) Maze Computer Communications, Inc.  All rights reserved.</description>
+<description>Licensee: John Hickey; POSitive Software Company; psc.john@gmail.com</description>
+<description>License: Evaluation - not licensed to make production manifests</description>
+
+<clrClass
+   name="Stimulsoft.Report.Com.ReportCom"
+   clsid="{7847395C-F7F5-3DC0-AB7C-A6F754ED1A45}"
+   progid="Stimulsoft.Report.Com.ReportCom"
+   threadingModel="Both"/>
+
+<file name="Stimulsoft.Report.Com.tlb">
+ <typelib
+     tlbid="{DD72CBA0-FD18-4A21-B107-6BB9271CDEF0}"
+     version="1.0"
+     helpdir=""
+     flags="hasdiskimage"/>
+</file>
+
+</assembly>

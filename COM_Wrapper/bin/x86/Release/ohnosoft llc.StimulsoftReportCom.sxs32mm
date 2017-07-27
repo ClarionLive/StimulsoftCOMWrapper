@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sxs32mm version="360" required="360">
+   <project name="ohnosoft llc.StimulsoftReportCom" version="1.0.0.0" type="win32" token="" language="" build="auto" processor="x86" target="H:\Dev\C10Apps\Stimulsoft\COM_Wrapper\bin\x86\Release" expanded="H:\Dev\C10Apps\Stimulsoft\COM_Wrapper\bin\x86\Release" relx=".">
+      <assembly xirm="0">
+         <file path="H:\Dev\C10Apps\Stimulsoft\COM_Wrapper\bin\x86\Release\Stimulsoft.Report.Com\Stimulsoft.Report.Com.dll" relx=".\Stimulsoft.Report.Com\Stimulsoft.Report.Com.dll" rely=".\Stimulsoft.Report.Com\Stimulsoft.Report.Com.dll"/>
+      </assembly>
+      <build xirm="0">
+      </build>
+   </project>
+</sxs32mm>

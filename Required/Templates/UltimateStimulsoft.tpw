@@ -1,0 +1,252 @@
+#EXTENSION(UltimateStimulsoft, 'Ultimate Stimulsoft (Global Extension)'),APPLICATION(ProcedureInfoExtension)
+#PREPARE
+  #INSERT(%CalcFamily, %CLSkelFamily)
+#ENDPREPARE
+#BOXED('Information')
+#INSERT(%CopyrightInfo)
+#ENDBOXED
+#DISPLAY
+#SHEET,HSCROLL
+#TAB('General')
+  #DISPLAY
+  #PROMPT('Global Class:',@S40),%ustClass,AT(90,,95,10),REQ,DEFAULT('ust')
+  #PROMPT('Multi DLL',CHECK),%ustMultiDLL,AT(90),DEFAULT(0)
+  #ENABLE(%ustMultiDLL=1),ClEAR
+    #PROMPT('Declaration:',DROP('Declared in another App[0]|Declared in this app[1]')),%ustMultiDLLData,DEFAULT(0),AT(90,,95,10)
+  #ENDENABLE 
+  #PROMPT('Use RegFree COM',CHECK),%UseRegFreeCom,Default(1)
+  #PROMPT('Create Manifest',CHECK),%CreateManifest,Default(1) 
+  #PROMPT('Stimulsoft.Net Version:',DROP(%CalcUltimateStimulsoftOptions())),%UltimateStimulsoftCtrlVer,DEFAULT(2)
+  #BUTTON('License Key')
+  #PROMPT('License Key',TEXT),%LicenseKey,AT(,,,100)
+  #ENDBUTTON
+  #INSERT(%TabCopyright)
+  #ENDTAB
+  #TAB('Connection Info') 
+  #PROMPT('Connection (String/Var)',@S60),%ConnectionString
+  #PROMPT('Server (String/Var)',@S60),%ServerString
+  #PROMPT('UserName (String/Var)',@S60),%UserNameString
+  #PROMPT('Password (String/Var)',@S60),%PasswordString
+  #PROMPT('Database (String/Var)',@S60),%DatabaseString
+  #PROMPT('Trusted Connection (Byte/Var)',@S60),%TrustedByte    
+#ENDTAB  
+#INSERT(%TabProcedureInfo)
+#INSERT(%TabInstructions)
+#INSERT(%TabContributors)
+#INSERT(%TabClarionVer)
+#ENDSHEET
+#DISPLAY
+#DISPLAY
+#PROMPT('Disable template',CHECK),%ustTemplateDisable,AT(10),DEFAULT(0)
+
+#AT(%AfterGenerateXPManifest),WHERE(~%ustTemplateDisable AND %CreateManifest)
+  #INSERT(%UltimateStimulsoftManifest, %UltimateStimulsoftCtrlVer)
+#ENDAT
+
+#ATSTART          
+  #DECLARE(%ThisApplicationExtension)
+  #DECLARE(%ustDataExternal)
+  #IF(%ustMultiDLL=1 AND %ustMultiDLLData=0)
+    #SET(%ustDataExternal,',EXTERNAL,DLL(dll_mode)')
+  #ENDIF
+  
+#ENDAT
+
+#AT(%AfterGlobalIncludes),WHERE(~%ustTemplateDisable)
+  INCLUDE('UltimateStimulsoft.INC'),ONCE          
+#ENDAT
+
+#AT(%CustomGlobalDeclarations),WHERE(~%ustTemplateDisable)
+  #INSERT(%CalcFamily, %CLSkelFamily)
+  #IF(%CLSkelFamily='LEGACY')
+  #PROJECT('UltimateStimulsoft.CLW')
+  #ENDIF  
+#ENDAT
+
+#AT(%GlobalData),WHERE(~%ustTemplateDisable)
+UltimateStimulsoft_TPLVersion       CSTRING('v%UltimateStimulsoftTPLVersion')%ustDataExternal
+ust_ServerString             STRING(200)%ustDataExternal
+ust_UserNameString           STRING(200)%ustDataExternal
+ust_PasswordString           STRING(200)%ustDataExternal
+ust_DatabaseString           STRING(200)%ustDataExternal
+ust_TrustedByte              BYTE(0)%ustDataExternal 
+ust_LicenseKey               STRING('"%LicenseKey"')
+#ENDAT
+
+#AT(%DLLExportList),WHERE(%ustMultiDLL=1 AND %ustMultiDLLData=1 AND ~%ustTemplateDisable)
+  $UltimateStimulsoft_TPLVersion  @?
+  $ust_ServerString         @?             
+  $ust_UserNameString       @?           
+  $ust_PasswordString       @?            
+  $ust_DatabaseString       @?            
+  $ust_TrustedByte          @?  
+  $ust_LicenseKey           @?
+#ENDAT
+#!  
+#!
+#GROUP(%TabInstructions) 
+  #TAB('Methods')
+  #DISPLAY('')
+  #DISPLAY('See example app for more information.')  
+  #DISPLAY('')
+  #DISPLAY('')         
+  #ENDTAB
+  #TAB('Properties')  
+  #DISPLAY('.QueryTableName')
+  #ENDTAB
+#!
+#!
+#GROUP(%TabCopyright)
+#BOXED,SECTION,AT(0,23,240,42)
+  #DISPLAY('Ultimate Stimulsoft'),AT(10,0),PROP(PROP:FontStyle,700),PROP(PROP:FontName,'Tahoma')
+  #DISPLAY('Version ' & %UltimateStimulsoftTPLVersion),AT(10,10),PROP(PROP:FontStyle,700),PROP(PROP:FontName,'Tahoma')
+  #DISPLAY('http://www.clarionlive.com'),AT(10,30)
+  #DISPLAY('')
+#ENDBOXED
+#!
+#!
+#GROUP(%TabContributors)
+#TAB('Contributors')
+  #DISPLAY
+  #DISPLAY('Arnold Young + John Hickey = ClarionLive')
+  #DISPLAY('http://www.clarionlive.com')
+  #DISPLAY
+  #DISPLAY('Dave Bratovich')
+  #DISPLAY('Wrote the manifest, it wasn''t easy! ')   
+  #DISPLAY('If you use this consider donating')   
+  #DISPLAY('using PayPal to davbrat@comcast.net')   
+  #DISPLAY
+  #DISPLAY('Visit http://integritysystemssoftware.com')
+  #DISPLAY('to generate Manifests for your COM controls')
+  #DISPLAY('using the Regfree Com Manifest Generator!')
+  #DISPLAY
+  #DISPLAY('Andy Wilton, Noyantis')
+  #DISPLAY('http://www.Noyantis.com')
+#ENDTAB
+#!
+#!
+#GROUP(%TabClarionVer)
+#TAB('Template Set')
+  #DISPLAY
+  #DISPLAY('Current Template Set being used by this app.')
+  #DISPLAY
+  #DISPLAY('This will be set automatically for you once a compile has')
+  #DISPLAY('been performed.')
+  #DISPLAY
+  #ENABLE(%False)
+    #PROMPT('Template Set:',@S10),%CLSkelFamily,Default(''),AT(90,,95,10)
+  #ENDENABLE
+  #DISPLAY
+#ENDTAB
+#!
+#!
+#GROUP(%TabOOP)
+#TAB('OOP'),WHERE(%False)
+  #BOXED('Default prompts'),AT(0,0),WHERE(%False),HIDE
+  #INSERT(%OOPHiddenPrompts(ABC))
+  #ENDBOXED
+#ENDTAB
+#!
+#!
+#GROUP(%TabClassesABC, %CLSkelFamily)
+#TAB('&Classes'),WHERE(%CLSkelFamily='ABC')
+  #WITH(%ClassItem, 'Default')
+    #INSERT(%ClassPrompts(ABC))
+  #ENDWITH
+#ENDTAB
+#!
+#!
+#GROUP(%TabClassesLEGACY, %CLSkelFamily)
+#TAB('&Classes'),WHERE(%CLSkelFamily='LEGACY')
+  #BOXED('')
+    #PROMPT('Object:',@S40),%ObjectID,AT(65,,115,10)
+  #ENDBOXED
+#ENDTAB
+#!
+#GROUP(%CalcFamily, * %CLSkelFamily)
+#IF(VarExists(%AppTemplateFamily))
+  #IF(%AppTemplateFamily='CLARION')
+    #SET(%CLSkelFamily,'LEGACY')
+  #ELSE
+    #SET(%CLSkelFamily,'ABC')
+  #ENDIF
+#ELSIF(VarExists(%cwtemplateversion))
+  #IF(%cwtemplateversion = 'v5.5')
+    #IF(VarExists(%ABCVersion))
+      #SET(%CLSkelFamily,'ABC')
+    #ELSE
+      #SET(%CLSkelFamily,'LEGACY')
+    #ENDIF
+  #ELSE
+    #IF(%cwtemplateversion = 'v2.003')
+      #SET(%CLSkelFamily,'LEGACY')
+    #ELSE
+      #SET(%CLSkelFamily,'ABC')
+    #ENDIF
+  #ENDIF
+#ENDIF
+#!----------------------------------------------------------------
+#EXTENSION(UltimateStimulsoftProcedureExtension,'Ultimate Stimulsoft Procedure Extension Template'),PROCEDURE
+#SHEET
+#TAB    ('Ultimate Stimulsoft')
+#DISPLAY('Ultimate Stimulsoft Extension Template')
+#DISPLAY('')
+#DISPLAY('')
+#ENDTAB
+#ENDSHEET  
+#AT(%LocalDataAfterClasses),WHERE(%ProcStillNeedsUltST()),PRIORITY(100),DESCRIPTION('UltimateStimulsoft Object')
+#INSERT(%DeclareClass)
+#ENDAT
+!
+#AT(%DataSection),PRIORITY(100),WHERE(%ProcStillNeedsUltST()),PRIORITY(100),DESCRIPTION('UltimateStimulsoft Object')
+#INSERT(%DeclareClass)
+#ENDAT
+!
+#AT(%DataSectionBeforeWindow),WHERE(%ProcStillNeedsUltST()),PRIORITY(100),DESCRIPTION('UltimateStimulsoft Object')
+#INSERT(%DeclareClass)
+#ENDAT
+!
+#AT(%DeclarationSection),WHERE(%ProcStillNeedsUltST()),PRIORITY(100),DESCRIPTION('UltimateStimulsoft Object')
+#INSERT(%DeclareClass)
+#ENDAT
+#!*****************************************************************************
+#GROUP(%ProcStillNeedsUltST),AUTO
+  #EQUATE(%CustomFlag, 'UltST|'& %Procedure)
+  #IF(~INLIST(%CustomFlag, %CustomFlags))
+    #ADD(%CustomFlags, %CustomFlag)
+    #RETURN(%True)
+  #ENDIF
+  #RETURN(%False)
+#!*****************************************************************************
+#GROUP(%DeclareClass,%ExternalAttr='')
+%[20]ustClass UltimateStimulsoft%ExternalAttr
+#!*****************************************************************************
+#GROUP(%UltimateStimulsoftManifest, %UltimateStimulsoftCtrlVer)
+#CREATE('Stimulsoft.Report.Com.manifest')
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--Stimulsoft .net COM wrapper RegFree manifest created by Dave Bratovich 07.13.2017 -->
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assemblyIdentity 
+    name="Stimulsoft.Report.Com" 
+    version="1.0.0.0" 
+    type="win32">
+</assemblyIdentity>
+<clrClass 
+    name="Stimulsoft.Report.Com.ReportCom" 
+    clsid="{7847395C-F7F5-3DC0-AB7C-A6F754ED1A45}" 
+    progid="Stimulsoft.Report.Com.ReportCom" 
+    threadingModel="Both" 
+    runtimeVersion="v4.0.30319">
+</clrClass>
+<file name="Stimulsoft.Report.Com.Dll">
+    <typelib 
+        tlbid="{DD72CBA0-FD18-4A21-B107-6BB9271CDEF0}" 
+        version="1.0" 
+        helpdir="" 
+        flags="hasdiskimage" />
+</file>   
+</assembly>
+#CLOSE('Stimulsoft.Report.Com.manifest')  
+#!*****************************************************************************
+#GROUP(%CalcUltimateStimulsoftOptions)
+#RETURN('v2017.1.9[2]|v2016.3[1]')
